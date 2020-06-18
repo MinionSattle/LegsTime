@@ -1,0 +1,187 @@
+<html>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dygraph/2.1.0/dygraph.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dygraph/2.1.0/dygraph.min.css" />
+    </head>
+    <body>
+        <div id="legsGraph" style="width:50%; height:50%;"></div>
+        <p>
+            <button id="a" onclick="toggleParty(this.id)">All</button>
+            <button id="b" onclick="toggleParty(this.id)">None</button>
+        </p>
+        <p>
+            <input type="checkbox" id="0" onclick="toggle(this)" checked>
+            <label for="0">Acts</label>
+            <input type="checkbox" id="1" onclick="toggle(this)" checked>
+            <label for="0">Bills</label>
+            <input type="checkbox" id="2" onclick="toggle(this)" checked>
+            <label for="0">Amendments</label>
+            <input type="checkbox" id="3" onclick="toggle(this)" unchecked>
+            <label for="0">Repeals</label>
+        </p>
+        <p>
+            <button id="e" onclick="toggleParty(this.id)">All</button>
+            <button id="f" onclick="toggleParty(this.id)">None</button>
+        </p>
+        <p>
+            <input type="checkbox" id="4" onclick="toggle(this)" unchecked>
+            <label for="0">Maori</label>
+            <input type="checkbox" id="5" onclick="toggle(this)" unchecked>
+            <label for="0">Settlements</label>
+            <input type="checkbox" id="6" onclick="toggle(this)" unchecked>
+            <label for="0">Climate</label>
+            <input type="checkbox" id="7" onclick="toggle(this)" unchecked>
+            <label for="0">Education</label>
+            <input type="checkbox" id="8" onclick="toggle(this)" unchecked>
+            <label for="0">Immigration</label>
+            <input type="checkbox" id="9" onclick="toggle(this)" unchecked>
+            <label for="0">Drugs and Alchohol</label>
+        </p>
+        <p>
+            <button id="c" onclick="toggleParty(this.id)">All</button>
+            <button id="d" onclick="toggleParty(this.id)">None</button>
+        </p>
+        <p>
+            <input type="checkbox" id="10" onclick="toggle(this)" checked>
+            <label for="0">National</label>
+            <input type="checkbox" id="11" onclick="toggle(this)" checked>
+            <label for="0">Labour</label>
+            <input type="checkbox" id="12" onclick="toggle(this)" unchecked>
+            <label for="0">NZ First</label>
+            <input type="checkbox" id="13" onclick="toggle(this)" unchecked>
+            <label for="0">Alliance</label>
+            <input type="checkbox" id="14" onclick="toggle(this)" unchecked>
+            <label for="0">Act</label>
+            <input type="checkbox" id="15" onclick="toggle(this)" unchecked>
+            <label for="0">United</label>
+            <input type="checkbox" id="16" onclick="toggle(this)" unchecked>
+            <label for="0">Green</label>
+            <input type="checkbox" id="17" onclick="toggle(this)" unchecked>
+            <label for="0">United Future</label>
+            <input type="checkbox" id="18" onclick="toggle(this)" unchecked>
+            <label for="0">Progressive</label>
+            <input type="checkbox" id="19" onclick="toggle(this)" unchecked>
+            <label for="0">Maori</label> 
+        </p>
+        
+        <script type="text/javascript">
+            
+        function toggleParty(el){
+            if(el == 'a' || el == 'b'){
+                for(var i = 0;i<=3;i++){
+                    document.getElementById(i).checked = (el == 'a');
+                    toggle(document.getElementById(i));
+                }
+            }else if(el == 'c' || el == 'd'){
+                for(var i = 10;i<=19;i++){
+                    document.getElementById(i).checked = (el == 'c');
+                    toggle(document.getElementById(i));
+                }
+            }else{
+                for(var i = 4;i<=9;i++){
+                    document.getElementById(i).checked = (el == 'e');
+                    toggle(document.getElementById(i));
+                }
+            }
+        }    
+        
+        var blockRedraw = false;
+        
+          gs = new Dygraph(
+                document.getElementById("legsGraph"),
+                "Legs_Time - Legs.csv", // path to CSV file
+                {
+                    title: 'Legislation passed in New Zealand compared to Party Seats',
+                    ylabel: 'Pieces of Legislation',
+                    y2label: 'Seats in Parlement',
+                    drawPoints:true,
+                    highlightCircleSize:4,
+                    connectSeparatedPoints: true,
+                    strokeWidth: 0, 
+                    pointSize:1,
+                    labelsShowZeroValues:false,
+                    showRangeSelector:true,
+                    rangeSelectorHeight: 35,
+                    rangeSelectorPlotFillColor:'MediumSlateBlue',
+                    rangeSelectorPlotFillGradientColor: 'rgba(123, 104, 238, 0)',
+                    digitsAfterDecimal:0,
+                    series: {
+                        'National':{axis:'y2',color:'#00529f'},
+                        'Labour':{axis:'y2',color:'#d82a20'},
+                        'NZFirst':{axis:'y2',color:'black'},
+                        'Alliance':{axis:'y2',color:'#33cc66'},
+                        'Act':{axis:'y2',color:'#fde401'},
+                        'United':{axis:'y2',color:'#663377'},
+                        'Green':{axis:'y2',color:'#098137'},
+                        'UnitedFuture':{axis:'y2',color:'#501557'},
+                        'Progressive':{axis:'y2',color:'#9e9e9e'},
+                        'MaoriParty':{axis:'y2',color:'#ef4a42'}
+                    },
+                    axes:{
+                        y:{
+                             valuesRange: [0,65]   
+                        },
+                        y2:{
+                            drawPoints:false,stepPlot:true,strokeWidth: 0.5,valuesRange: [0,50] 
+                        }
+                    }
+                }          // options
+            )
+        
+        
+        function toggle(el){
+           gs.setVisibility(el.id,el.checked); 
+        }
+        gs.ready(function() {
+        for(var i = 0; i<=19;i++){
+            toggle(document.getElementById(i));
+        }
+        gs.setAnnotations([
+            {
+                series: "Labour",
+                x: "19991127",
+                shortText: "L",
+                attachAtBottom: false,
+                text:"Labour Alliance coalition Government"
+            },
+            {
+                series: "National",
+                x: "19961012",
+                shortText: "N",
+                attachAtBottom: false,
+                text:"National NZ First coalition Government"
+            },
+            {
+                series: "National",
+                x: "19931106",
+                shortText: "N",
+                text:"National Government",
+                attachAtBottom: false
+            },
+            {
+                series: "Labour",
+                x: "20020627",
+                shortText: "L",
+                text:"Labour Progressive coalition Government",
+                attachAtBottom: false
+            },
+            {
+                series: "Labour",
+                x: "20050917",
+                shortText: "L",
+                text:"Labour Progressive coalition Government",
+                attachAtBottom: false
+            },
+            {
+                series: "National",
+                x: "20081108",
+                shortText: "N",
+                attachAtBottom: false,
+                text:"National minority Government"
+            }
+        ]);
+      });
+            
+    </script>
+    </body>
+</html>
