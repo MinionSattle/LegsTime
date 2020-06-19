@@ -5,6 +5,7 @@
     </head>
     <body>
         <div id="legsGraph" style="width:50%; height:50%;"></div>
+        <div id="legend" style="width:50%;"></div>
         <p>
             <button id="a" onclick="toggleParty(this.id)">All</button>
             <button id="b" onclick="toggleParty(this.id)">None</button>
@@ -12,8 +13,7 @@
         <p>
             <input type="checkbox" id="0" onclick="toggle(this)" checked>
             <label for="0">Acts</label>
-            <input type="checkbox" id="1" onclick="toggle(this)" checked>
-            <label for="0">Bills</label>
+            
             <input type="checkbox" id="2" onclick="toggle(this)" checked>
             <label for="0">Amendments</label>
             <input type="checkbox" id="3" onclick="toggle(this)" unchecked>
@@ -69,8 +69,10 @@
         function toggleParty(el){
             if(el == 'a' || el == 'b'){
                 for(var i = 0;i<=3;i++){
+                    if(i!=1){
                     document.getElementById(i).checked = (el == 'a');
                     toggle(document.getElementById(i));
+                    }
                 }
             }else if(el == 'c' || el == 'd'){
                 for(var i = 10;i<=19;i++){
@@ -94,11 +96,13 @@
                     title: 'Legislation passed in New Zealand compared to Party Seats',
                     ylabel: 'Pieces of Legislation',
                     y2label: 'Seats in Parlement',
+                    //labelsSeparateLines:true,
+                    labelsDiv:"legend",
                     drawPoints:true,
                     highlightCircleSize:4,
                     connectSeparatedPoints: true,
                     strokeWidth: 0, 
-                    pointSize:1,
+                    pointSize:2,
                     labelsShowZeroValues:false,
                     showRangeSelector:true,
                     rangeSelectorHeight: 35,
@@ -106,6 +110,9 @@
                     rangeSelectorPlotFillGradientColor: 'rgba(123, 104, 238, 0)',
                     digitsAfterDecimal:0,
                     series: {
+                        'Acts':{color:'orange'},
+                        'Bills':{pointSize:0},
+                        'Amendments':{color:'black'},
                         'National':{axis:'y2',color:'#00529f'},
                         'Labour':{axis:'y2',color:'#d82a20'},
                         'NZFirst':{axis:'y2',color:'black'},
@@ -134,7 +141,9 @@
         }
         gs.ready(function() {
         for(var i = 0; i<=19;i++){
+            if(i!=1){
             toggle(document.getElementById(i));
+            }
         }
         gs.setAnnotations([
             {
@@ -149,7 +158,7 @@
                 x: "19961012",
                 shortText: "N",
                 attachAtBottom: false,
-                text:"National NZ First coalition Government"
+                text:"National NZ First coalition Government, First MMP election"
             },
             {
                 series: "National",
@@ -178,7 +187,8 @@
                 shortText: "N",
                 attachAtBottom: false,
                 text:"National minority Government"
-            }
+            },
+            
         ]);
       });
             
